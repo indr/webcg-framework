@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/indr/webcg-framework.git"
+    "url": "git+https://github.com/indr/webcg-framework.git"
   },
   "keywords": [
     "casparcg",
@@ -26,9 +26,9 @@
   "author": "Reto Inderbitzin <mail@indr.ch>",
   "license": "MIT",
   "bugs": {
-    "url": "https://gitlab.com/indr/webcg-framework/issues"
+    "url": "https://github.com/indr/webcg-framework/issues"
   },
-  "homepage": "https://gitlab.com/indr/webcg-framework#readme",
+  "homepage": "https://github.com/indr/webcg-framework#readme",
   "devDependencies": {
     "chai": "^4.1.2",
     "express": "^4.16.3",
