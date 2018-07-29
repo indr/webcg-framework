@@ -4,7 +4,7 @@
   (factory());
 }(this, (function () { 'use strict';
 
-  var version = "1.0.0";
+  var version = "1.1.0";
 
   var Parser = (function () {
     function Parser () {}
@@ -67,6 +67,7 @@
   };
 
   WebCG.prototype.addEventListener = function addEventListener (type, listener) {
+    if (typeof listener !== 'function') { throw new TypeError('listener must be a function') }
     var listeners = this._listeners[type] = this._listeners[type] || [];
     listeners.push(listener);
   };
@@ -109,11 +110,12 @@
       cancelable: true
     }, customEventInit));
     var listeners = this._getListeners(type);
-    listeners.forEach(function (listener) {
+    for (var i = listeners.length - 1; i >= 0; i--) {
+      var listener = listeners[i];
       if (typeof listener === 'function') {
         listener(event);
       }
-    });
+    }
     return event
   };
 

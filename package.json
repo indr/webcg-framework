@@ -1,6 +1,6 @@
 {
   "name": "webcg-framework",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Framework to create HTML templates and graphic overlays for WebCG and CasparCG",
   "browser": "dist/webcg-framework.umd.js",
   "scripts": {
