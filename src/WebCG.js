@@ -15,6 +15,7 @@ class WebCG {
   }
 
   addEventListener (type, listener) {
+    if (typeof listener !== 'function') throw new TypeError('listener must be a function')
     const listeners = this._listeners[type] = this._listeners[type] || []
     listeners.push(listener)
   }
@@ -57,11 +58,12 @@ class WebCG {
       cancelable: true
     }, customEventInit))
     const listeners = this._getListeners(type)
-    listeners.forEach(listener => {
+    for (let i = listeners.length - 1; i >= 0; i--) {
+      const listener = listeners[i]
       if (typeof listener === 'function') {
         listener(event)
       }
-    })
+    }
     return event
   }
 }

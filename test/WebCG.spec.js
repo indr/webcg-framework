@@ -10,6 +10,11 @@ describe('WebCG', () => {
     webcg = new WebCG(window)
   })
 
+  it('throws when adding an invalid event listener', () => {
+    expect(() => webcg.addEventListener('play', ''))
+      .to.throw(TypeError, 'listener must be a function')
+  })
+
   it('triggers play on window.play', (done) => {
     webcg.addEventListener('play', () => {
       done()
@@ -79,6 +84,18 @@ describe('WebCG', () => {
       setTimeout(done, 1000)
     })
     window.update('value')
+  })
+
+  it('triggers listeners in reverse order', (done) => {
+    let counter = 0
+    webcg.addEventListener('play', () => {
+      expect(++counter).to.equal(2)
+      done()
+    })
+    webcg.addEventListener('play', () => {
+      expect(++counter).to.equal(1)
+    })
+    window.play()
   })
 
   it('aliases on for addEventListener', () => {
