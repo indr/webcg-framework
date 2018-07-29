@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>example-lower-third</title>
+    <script src="webcg-framework.umd.js"></script>
+</head>
+<body>
+<button>Test</button>
+<script>
+  webcg.addEventListener('play', function (e) {
+    console.log('e.preventDefault()', e.preventDefault())
+    console.log('example-lower-third: play', e)
+  })
+
+  const button = document.body.querySelector('button')
+  button.addEventListener('click', () => {
+    console.log('first')
+  })
+
+  button.addEventListener('click', () => {
+    console.log('second')
+  })
+
+  button.addEventListener('click', () => {
+    console.log('third')
+  })
+</script>
+</body>
+</html>
