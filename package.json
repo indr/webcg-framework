@@ -63,8 +63,8 @@
       "sinon"
     ],
     "ignore": [
-      "demo/",
-      "dist/"
+      "dist/",
+      "docs/"
     ]
   },
   "standard-version": {
