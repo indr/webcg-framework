@@ -38,8 +38,18 @@ describe('initWebCg', () => {
     expect(scripts).to.include('webcg-devtools.umd.js')
   })
 
-  it('should add webcg-devtools.umd.js with path', () => {
+  it('should add webcg-devtools.umd.js with path to webcg-framework.umd.js', () => {
     window.document.currentScript = {src: 'path/to/webcg-framework.umd.js'}
+    initDevTools(window)
+    const scripts = []
+    appended.forEach(each => {
+      scripts.push(each.src)
+    })
+    expect(scripts).to.include('path/to/webcg-devtools.umd.js')
+  })
+
+  it('should add webcg-devtools.umd.js with path to webcg-adobe-animate-adapter.umd.js', () => {
+    window.document.currentScript = {src: 'path/to/webcg-adobe-animate-adapter.umd.js'}
     initDevTools(window)
     const scripts = []
     appended.forEach(each => {

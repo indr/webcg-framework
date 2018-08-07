@@ -9,7 +9,7 @@ const getCurrentScriptPathWithTrailingSlash = function (document) {
   if (!document.currentScript) return ''
   if (!document.currentScript.src || typeof document.currentScript.src !== 'string') return ''
   const src = document.currentScript.src
-  return src.substring(0, src.lastIndexOf('webcg-framework.umd.js'))
+  return src.substring(0, src.lastIndexOf('/') + 1)
 }
 
 const initDevTools = function (window) {
