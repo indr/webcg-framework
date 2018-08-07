@@ -4,7 +4,7 @@
   (factory());
 }(this, (function () { 'use strict';
 
-  var version = "1.2.0";
+  var version = "1.2.1";
 
   var Parser = (function () {
     function Parser () {}
@@ -128,7 +128,7 @@
     if (!document.currentScript) { return '' }
     if (!document.currentScript.src || typeof document.currentScript.src !== 'string') { return '' }
     var src = document.currentScript.src;
-    return src.substring(0, src.lastIndexOf('webcg-framework.umd.js'))
+    return src.substring(0, src.lastIndexOf('/') + 1)
   };
 
   var initDevTools = function (window) {
