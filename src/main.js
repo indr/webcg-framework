@@ -4,13 +4,21 @@ const initWebCg = function (window) {
   window.webcg = new WebCG(window)
 }
 
+const getCurrentScriptPathWithTrailingSlash = function (document) {
+  if (!document || typeof document !== 'object') return ''
+  if (!document.currentScript) return ''
+  if (!document.currentScript.src || typeof document.currentScript.src !== 'string') return ''
+  const src = document.currentScript.src
+  return src.substring(0, src.lastIndexOf('webcg-framework.umd.js'))
+}
+
 const initDevTools = function (window) {
   const debug = (window.location.search.match(/[?&]debug=([^&$]+)/) || [])[1] === 'true'
   if (!debug) return
 
   const document = window.document
   const script = document.createElement('script')
-  script.src = 'webcg-devtools.umd.js'
+  script.src = getCurrentScriptPathWithTrailingSlash(document) + 'webcg-devtools.umd.js'
   console.log('[webcg-framework] injecting ' + script.src)
   document.head.append(script)
 }
