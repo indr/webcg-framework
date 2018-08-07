@@ -34,3 +34,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 <a name="1.0.0"></a>
 # 1.0.0 (2018-07-29)
+
+### Features
+
+* first release
