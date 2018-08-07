@@ -4,7 +4,7 @@
   (factory());
 }(this, (function () { 'use strict';
 
-  var version = "1.1.0";
+  var version = "1.2.0";
 
   var Parser = (function () {
     function Parser () {}
@@ -123,13 +123,21 @@
     window.webcg = new WebCG(window);
   };
 
+  var getCurrentScriptPathWithTrailingSlash = function (document) {
+    if (!document || typeof document !== 'object') { return '' }
+    if (!document.currentScript) { return '' }
+    if (!document.currentScript.src || typeof document.currentScript.src !== 'string') { return '' }
+    var src = document.currentScript.src;
+    return src.substring(0, src.lastIndexOf('webcg-framework.umd.js'))
+  };
+
   var initDevTools = function (window) {
     var debug = (window.location.search.match(/[?&]debug=([^&$]+)/) || [])[1] === 'true';
     if (!debug) { return }
 
     var document = window.document;
     var script = document.createElement('script');
-    script.src = 'webcg-devtools.umd.js';
+    script.src = getCurrentScriptPathWithTrailingSlash(document) + 'webcg-devtools.umd.js';
     console.log('[webcg-framework] injecting ' + script.src);
     document.head.append(script);
   };
