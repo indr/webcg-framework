@@ -4,27 +4,97 @@
     <meta charset="UTF-8">
     <title>example-lower-third</title>
     <script src="webcg-framework.umd.js"></script>
+    <style type="text/css">
+        body {
+            overflow: hidden;
+            font-family: Verdana, Geneva, sans-serif;
+        }
+
+        .overlay {
+            position: absolute;
+            left: 5vw;
+            bottom: 5vh;
+            opacity: 0;
+        }
+
+        .line {
+            padding: 8px;
+        }
+
+        .line:empty {
+            display: none;
+        }
+
+        .line-1 {
+            background: #29539b linear-gradient(315deg, #29539b 0%, #1e3b70 74%);
+            color: white;
+            font-size: 40px;
+        }
+
+        .line-2 {
+            background: #f6f6f6 linear-gradient(315deg, #f6f6f6 0%, #e9e9e9 74%);
+            color: #222;
+            font-size: 30px;
+        }
+
+        .intro {
+            animation-duration: 0.3s;
+            animation-name: slideIn;
+            animation-fill-mode: both;
+            animation-timing-function: ease-in-out;
+        }
+
+        .outro {
+            animation-duration: 0.3s;
+            animation-name: fadeOut;
+            animation-fill-mode: both;
+            animation-timing-function: ease-in;
+        }
+
+        @keyframes slideIn {
+            from {
+                bottom: -10vh;
+                opacity: 0;
+            }
+            to {
+                bottom: 5vh;
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+    </style>
+    <script type="text/javascript">
+      webcg.on('data', function (event) {
+        const data = event.detail
+        document.querySelector('.line-1').innerHTML = data.f0 || ''
+        document.querySelector('.line-2').innerHTML = data.f1 || ''
+      })
+
+      webcg.on('play', function () {
+        const overlay = document.querySelector('.overlay')
+        overlay.classList.add('intro')
+        overlay.classList.remove('outro')
+      })
+
+      webcg.on('stop', function () {
+        const overlay = document.querySelector('.overlay')
+        overlay.classList.remove('intro')
+        overlay.classList.add('outro')
+      })
+    </script>
 </head>
 <body>
-<button>Test</button>
-<script>
-  webcg.addEventListener('play', function (e) {
-    console.log('e.preventDefault()', e.preventDefault())
-    console.log('example-lower-third: play', e)
-  })
-
-  const button = document.body.querySelector('button')
-  button.addEventListener('click', () => {
-    console.log('first')
-  })
-
-  button.addEventListener('click', () => {
-    console.log('second')
-  })
-
-  button.addEventListener('click', () => {
-    console.log('third')
-  })
-</script>
+<div class="overlay">
+    <div class="line line-1">Lower Third</div>
+    <div class="line line-2">With an optional second line</div>
+</div>
 </body>
 </html>
