@@ -27,7 +27,7 @@ describe('Parser', () => {
 
   it('should accept object', () => {
     const parser = new Parser()
-    const data = parser.parse({f0: 'value'})
+    const data = parser.parse({ f0: 'value' })
     expect(data).to.deep.equal({
       'f0': 'value'
     })

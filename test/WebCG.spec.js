@@ -53,18 +53,18 @@ describe('WebCG', () => {
 
   it('triggers data with first argument', (done) => {
     webcg.addEventListener('data', (e) => {
-      expect(e.detail).to.deep.equal({f0: 'v0'})
+      expect(e.detail).to.deep.equal({ f0: 'v0' })
       done()
     })
-    window.update({f0: 'v0'})
+    window.update({ f0: 'v0' })
   })
 
   it('triggers data with parsed JSON', (done) => {
     webcg.addEventListener('data', (e) => {
-      expect(e.detail).to.deep.equal({f0: 'v0'})
+      expect(e.detail).to.deep.equal({ f0: 'v0' })
       done()
     })
-    window.update(JSON.stringify({f0: 'v0'}))
+    window.update(JSON.stringify({ f0: 'v0' }))
   })
 
   it('triggers data with parsed templateData XML', (done) => {

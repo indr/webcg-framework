@@ -39,7 +39,7 @@ describe('initWebCg', () => {
   })
 
   it('should add webcg-devtools.umd.js with path to webcg-framework.umd.js', () => {
-    window.document.currentScript = {src: 'path/to/webcg-framework.umd.js'}
+    window.document.currentScript = { src: 'path/to/webcg-framework.umd.js' }
     initDevTools(window)
     const scripts = []
     appended.forEach(each => {
@@ -49,7 +49,7 @@ describe('initWebCg', () => {
   })
 
   it('should add webcg-devtools.umd.js with path to webcg-adobe-animate-adapter.umd.js', () => {
-    window.document.currentScript = {src: 'path/to/webcg-adobe-animate-adapter.umd.js'}
+    window.document.currentScript = { src: 'path/to/webcg-adobe-animate-adapter.umd.js' }
     initDevTools(window)
     const scripts = []
     appended.forEach(each => {

@@ -8,7 +8,7 @@ module.exports = function (config) {
        * Make sure to disable Karma’s file watcher
        * because the preprocessor will use its own.
        */
-      {pattern: 'test/**/*.spec.js', watched: false}
+      { pattern: 'test/**/*.spec.js', watched: false }
     ],
     preprocessors: {
       'test/**/*.spec.js': ['rollup', 'sourcemap', 'coverage']
@@ -28,8 +28,8 @@ module.exports = function (config) {
     coverageReporter: {
       dir: './test/coverage',
       reporters: [
-        {type: 'lcov', subdir: '.'},
-        {type: 'text-summary'}
+        { type: 'lcov', subdir: '.' },
+        { type: 'text-summary' }
       ]
     }
   })

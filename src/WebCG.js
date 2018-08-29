@@ -41,10 +41,10 @@ class WebCG {
   }
 
   update (data) {
-    const event = this._dispatch('update', {detail: data})
+    const event = this._dispatch('update', { detail: data })
     if (!event.defaultPrevented) {
       const parsed = new Parser().parse(data)
-      this._dispatch('data', {detail: parsed})
+      this._dispatch('data', { detail: parsed })
     }
   }
 
