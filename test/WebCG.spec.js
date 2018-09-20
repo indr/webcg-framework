@@ -75,13 +75,13 @@ describe('WebCG', () => {
     window.update('<templateData></templateData>')
   })
 
-  it('does not trigger data when event prevent default', (done) => {
+  it('does not trigger data when update handler returns handled=true', (done) => {
     webcg.addEventListener('data', () => {
       done('unexpected call to data')
     })
     webcg.addEventListener('update', (e) => {
-      e.preventDefault()
-      setTimeout(done, 1000)
+      setTimeout(done, 500)
+      return true // handled, e.preventDefault()
     })
     window.update('value')
   })
@@ -94,6 +94,17 @@ describe('WebCG', () => {
     })
     webcg.addEventListener('play', () => {
       expect(++counter).to.equal(1)
+    })
+    window.play()
+  })
+
+  it('does not trigger next listener when handler returns handled=true', done => {
+    webcg.addEventListener('play', () => {
+      done('unexpected call to play')
+    })
+    webcg.addEventListener('play', () => {
+      setTimeout(done, 500)
+      return true // handled
     })
     window.play()
   })

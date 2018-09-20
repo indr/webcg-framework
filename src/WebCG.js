@@ -41,10 +41,10 @@ class WebCG {
   }
 
   update (data) {
-    const event = this._dispatch('update', { detail: data })
-    if (!event.defaultPrevented) {
+    const handled = this._dispatch('update', data)
+    if (!handled) {
       const parsed = new Parser().parse(data)
-      this._dispatch('data', { detail: parsed })
+      this._dispatch('data', parsed)
     }
   }
 
@@ -53,18 +53,19 @@ class WebCG {
     return this._listeners[type]
   }
 
-  _dispatch (type, customEventInit) {
+  _dispatch (type, detail) {
     const event = new window.CustomEvent(type, Object.assign({}, {
       cancelable: true
-    }, customEventInit))
+    }, { detail }))
     const listeners = this._getListeners(type)
-    for (let i = listeners.length - 1; i >= 0; i--) {
+    let handled = false
+    for (let i = listeners.length - 1; i >= 0 && handled === false; i--) {
       const listener = listeners[i]
       if (typeof listener === 'function') {
-        listener(event)
+        handled = !!listener(event)
       }
     }
-    return event
+    return handled
   }
 }
 
