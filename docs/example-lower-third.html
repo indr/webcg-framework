@@ -89,6 +89,16 @@
         overlay.classList.remove('intro')
         overlay.classList.add('outro')
       })
+
+      let invokeCount = 0
+      webcg.on('test', function () {
+        invokeCount++
+        document.querySelector('.line-1').innerHTML = 'invoked test ' + invokeCount + ' times'
+      })
+
+      webcg.on('test', function (data) {
+        document.querySelector('.line-2').innerHTML = data || new Date().toLocaleString()
+      })
     </script>
 </head>
 <body>
