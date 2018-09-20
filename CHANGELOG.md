@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/indr/webcg-framework/compare/v2.0.0...v2.1.0) (2018-09-20)
+
+
+### Features
+
+* add listener for custom invokable functions ([25cbf01](https://github.com/indr/webcg-framework/commit/25cbf01))
+* add listeners for custom invokable functions ([8c5c3ec](https://github.com/indr/webcg-framework/commit/8c5c3ec))
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/indr/webcg-framework/compare/v1.2.2...v2.0.0) (2018-09-20)
 
