@@ -4,7 +4,7 @@
   (factory());
 }(this, (function () { 'use strict';
 
-  var version = "2.0.0";
+  var version = "2.1.0";
 
   var Parser = (function () {
     function Parser () {}
@@ -53,13 +53,18 @@
     return Parser;
   }());
 
-  var WebCG = function WebCG (window) {
-    this._listeners = {};
+  var FUNCTIONS = ['play', 'stop', 'next', 'update'];
 
-    window.play = this.play.bind(this);
-    window.stop = this.stop.bind(this);
-    window.next = this.next.bind(this);
-    window.update = this.update.bind(this);
+  var WebCG = function WebCG (window) {
+    var this$1 = this;
+
+    this._listeners = {};
+    this._window = window;
+
+    FUNCTIONS.forEach(function (each) {
+      this$1._window[each] = this$1[each].bind(this$1);
+      this$1._window[each].webcg = true;
+    });
 
     // Aliases
     this.on = this.addEventListener;
@@ -70,6 +75,7 @@
     if (typeof listener !== 'function') { throw new TypeError('listener must be a function') }
     var listeners = this._listeners[type] = this._listeners[type] || [];
     listeners.push(listener);
+    this._addWindowFunction(type);
   };
 
   WebCG.prototype.removeEventListener = function removeEventListener (type, listener) {
@@ -78,25 +84,42 @@
     if (idx >= 0) {
       listeners.splice(idx, 1);
     }
+
+    if (listeners.length === 0) {
+      this._removeWindowFunction(type);
+    }
+  };
+
+  WebCG.prototype._addWindowFunction = function _addWindowFunction (name) {
+    if (typeof this._window[name] === 'function' && this._window[name].webcg) { return }
+
+    this._window[name] = this.dispatch.bind(this, name);
+    this._window[name].webcg = true;
+  };
+
+  WebCG.prototype._removeWindowFunction = function _removeWindowFunction (name) {
+    if (FUNCTIONS.indexOf(name) >= 0) { return }
+    if (typeof this._window[name] !== 'function' || !this._window[name].webcg) { return }
+    delete this._window[name];
   };
 
   WebCG.prototype.play = function play () {
-    this._dispatch('play');
+    this.dispatch('play');
   };
 
   WebCG.prototype.stop = function stop () {
-    this._dispatch('stop');
+    this.dispatch('stop');
   };
 
   WebCG.prototype.next = function next () {
-    this._dispatch('next');
+    this.dispatch('next');
   };
 
   WebCG.prototype.update = function update (data) {
-    var handled = this._dispatch('update', data);
+    var handled = this.dispatch('update', data);
     if (!handled) {
       var parsed = new Parser().parse(data);
-      this._dispatch('data', parsed);
+      this.dispatch('data', parsed);
     }
   };
 
@@ -105,13 +128,16 @@
     return this._listeners[type]
   };
 
-  WebCG.prototype._dispatch = function _dispatch (type, arg) {
+  WebCG.prototype.dispatch = function dispatch (type, arg) {
+      var arguments$1 = arguments;
+
+    Array.prototype.slice.call(arguments, 1);
     var listeners = this._getListeners(type);
     var handled = false;
     for (var i = listeners.length - 1; i >= 0 && handled === false; i--) {
       var listener = listeners[i];
       if (typeof listener === 'function') {
-        handled = !!listener(arg);
+        handled = !!listener.apply(null, Array.prototype.slice.call(arguments$1, 1));
       }
     }
     return handled
