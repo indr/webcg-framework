@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/indr/webcg-framework/compare/v1.2.2...v2.0.0) (2018-09-20)
+
+
+### Features
+
+* listeners are called with data arguments instead of custom event ([42a32e4](https://github.com/indr/webcg-framework/commit/42a32e4))
+* return false instead of event.preventDefault() ([74bd918](https://github.com/indr/webcg-framework/commit/74bd918))
+
+
+### BREAKING CHANGES
+
+* the first argument of the event listener is replaced with the events detail property. This simplifies event handling and allow the event handlers to have the same signature as called by CasparCG's HTML producer.
+* instead of calling event.preventDefault() your event handler has to return false
+
+
+
 <a name="1.2.2"></a>
 ## [1.2.2](https://github.com/indr/webcg-framework/compare/v1.2.1...v1.2.2) (2018-08-29)
 

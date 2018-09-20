@@ -4,7 +4,7 @@
   (factory());
 }(this, (function () { 'use strict';
 
-  var version = "1.2.2";
+  var version = "2.0.0";
 
   var Parser = (function () {
     function Parser () {}
@@ -93,10 +93,10 @@
   };
 
   WebCG.prototype.update = function update (data) {
-    var event = this._dispatch('update', { detail: data });
-    if (!event.defaultPrevented) {
+    var handled = this._dispatch('update', data);
+    if (!handled) {
       var parsed = new Parser().parse(data);
-      this._dispatch('data', { detail: parsed });
+      this._dispatch('data', parsed);
     }
   };
 
@@ -105,18 +105,16 @@
     return this._listeners[type]
   };
 
-  WebCG.prototype._dispatch = function _dispatch (type, customEventInit) {
-    var event = new window.CustomEvent(type, Object.assign({}, {
-      cancelable: true
-    }, customEventInit));
+  WebCG.prototype._dispatch = function _dispatch (type, arg) {
     var listeners = this._getListeners(type);
-    for (var i = listeners.length - 1; i >= 0; i--) {
+    var handled = false;
+    for (var i = listeners.length - 1; i >= 0 && handled === false; i--) {
       var listener = listeners[i];
       if (typeof listener === 'function') {
-        listener(event);
+        handled = !!listener(arg);
       }
     }
-    return event
+    return handled
   };
 
   var initWebCg = function (window) {
