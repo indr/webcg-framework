@@ -96,8 +96,9 @@
         document.querySelector('.line-1').innerHTML = 'invoked test ' + invokeCount + ' times'
       })
 
-      webcg.on('test', function (data) {
-        document.querySelector('.line-2').innerHTML = data || new Date().toLocaleString()
+      webcg.on('test', function (arg1, arg2) {
+        document.querySelector('.line-2').innerHTML = JSON.stringify(arg1) + ', ' +
+          JSON.stringify(arg2) + ', ' + new Date().toLocaleString()
       })
     </script>
 </head>

@@ -118,20 +118,20 @@ describe('WebCG', () => {
   })
 
   it('adds window function when adding a listener', () => {
-    webcg.addEventListener('test1', () => { })
-    expect(typeof window.test1).to.equal('function')
+    webcg.addEventListener('test', () => { })
+    expect(typeof window.test).to.equal('function')
   })
 
   it('removes window function when removing last listener', () => {
     const listener1 = () => {}
     const listener2 = () => {}
-    webcg.addEventListener('test1', listener1)
-    webcg.addEventListener('test1', listener2)
-    expect(typeof window.test1).to.equal('function')
-    webcg.removeEventListener('test1', listener1)
-    expect(typeof window.test1).to.equal('function')
-    webcg.removeEventListener('test1', listener2)
-    expect(typeof window.test1).to.equal('undefined')
+    webcg.addEventListener('test', listener1)
+    webcg.addEventListener('test', listener2)
+    expect(typeof window.test).to.equal('function')
+    webcg.removeEventListener('test', listener1)
+    expect(typeof window.test).to.equal('function')
+    webcg.removeEventListener('test', listener2)
+    expect(typeof window.test).to.equal('undefined')
   })
 
   it('does not remove play when removing last listener', () => {
@@ -140,5 +140,17 @@ describe('WebCG', () => {
     webcg.addEventListener('play', listener)
     webcg.removeEventListener('play', listener)
     expect(typeof window.play).to.equal('function')
+  })
+
+  it('can invoke custom function with multiple arguments', done => {
+    const that = {}
+    webcg.addEventListener('test', function (arg1, arg2, arg3) {
+      expect(arg1).to.equal('one')
+      expect(arg2).to.equal(2)
+      expect(arg3).to.equal('three')
+      expect(this).to.equal(that)
+      done()
+    }.bind(that))
+    window.test('one', 2, 'three')
   })
 })

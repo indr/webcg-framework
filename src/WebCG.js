@@ -75,12 +75,13 @@ class WebCG {
   }
 
   dispatch (type, arg) {
+    Array.prototype.slice.call(arguments, 1)
     const listeners = this._getListeners(type)
     let handled = false
     for (let i = listeners.length - 1; i >= 0 && handled === false; i--) {
       const listener = listeners[i]
       if (typeof listener === 'function') {
-        handled = !!listener(arg)
+        handled = !!listener.apply(null, Array.prototype.slice.call(arguments, 1))
       }
     }
     return handled
