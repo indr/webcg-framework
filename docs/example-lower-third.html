@@ -13,6 +13,7 @@
         .overlay {
             position: absolute;
             left: 5vw;
+            right: 5vw;
             bottom: 5vh;
             opacity: 0;
         }
@@ -72,8 +73,7 @@
         }
     </style>
     <script type="text/javascript">
-      webcg.on('data', function (event) {
-        const data = event.detail
+      webcg.on('data', function (data) {
         document.querySelector('.line-1').innerHTML = data.f0 || ''
         document.querySelector('.line-2').innerHTML = data.f1 || ''
       })

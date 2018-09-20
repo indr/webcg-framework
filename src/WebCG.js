@@ -53,16 +53,13 @@ class WebCG {
     return this._listeners[type]
   }
 
-  _dispatch (type, detail) {
-    const event = new window.CustomEvent(type, Object.assign({}, {
-      cancelable: true
-    }, { detail }))
+  _dispatch (type, arg) {
     const listeners = this._getListeners(type)
     let handled = false
     for (let i = listeners.length - 1; i >= 0 && handled === false; i--) {
       const listener = listeners[i]
       if (typeof listener === 'function') {
-        handled = !!listener(event)
+        handled = !!listener(arg)
       }
     }
     return handled

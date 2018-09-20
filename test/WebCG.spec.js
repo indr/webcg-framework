@@ -37,39 +37,39 @@ describe('WebCG', () => {
   })
 
   it('triggers update on window.update', (done) => {
-    webcg.addEventListener('update', (e) => {
+    webcg.addEventListener('update', () => {
       done()
     })
     window.update()
   })
 
-  it('triggers update with detail', (done) => {
-    webcg.addEventListener('update', (e) => {
-      expect(e.detail).to.equal('value')
+  it('triggers update with data', (done) => {
+    webcg.addEventListener('update', (data) => {
+      expect(data).to.equal('value')
       done()
     })
     window.update('value')
   })
 
   it('triggers data with first argument', (done) => {
-    webcg.addEventListener('data', (e) => {
-      expect(e.detail).to.deep.equal({ f0: 'v0' })
+    webcg.addEventListener('data', (data) => {
+      expect(data).to.deep.equal({ f0: 'v0' })
       done()
     })
     window.update({ f0: 'v0' })
   })
 
   it('triggers data with parsed JSON', (done) => {
-    webcg.addEventListener('data', (e) => {
-      expect(e.detail).to.deep.equal({ f0: 'v0' })
+    webcg.addEventListener('data', (data) => {
+      expect(data).to.deep.equal({ f0: 'v0' })
       done()
     })
     window.update(JSON.stringify({ f0: 'v0' }))
   })
 
   it('triggers data with parsed templateData XML', (done) => {
-    webcg.addEventListener('data', (e) => {
-      expect(e.detail).to.deep.equal({})
+    webcg.addEventListener('data', (data) => {
+      expect(data).to.deep.equal({})
       done()
     })
     window.update('<templateData></templateData>')
@@ -79,7 +79,7 @@ describe('WebCG', () => {
     webcg.addEventListener('data', () => {
       done('unexpected call to data')
     })
-    webcg.addEventListener('update', (e) => {
+    webcg.addEventListener('update', () => {
       setTimeout(done, 500)
       return true // handled, e.preventDefault()
     })
