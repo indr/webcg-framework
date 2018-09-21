@@ -4,7 +4,7 @@
   (factory());
 }(this, (function () { 'use strict';
 
-  var version = "2.1.0";
+  var version = "2.1.1";
 
   var Parser = (function () {
     function Parser () {}
