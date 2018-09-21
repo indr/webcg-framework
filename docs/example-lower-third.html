@@ -73,6 +73,8 @@
         }
     </style>
     <script type="text/javascript">
+      window.debugData = { 'f0': 'Example lower third', 'f1': 'with a subtitle' }
+
       webcg.on('data', function (data) {
         document.querySelector('.line-1').innerHTML = data.f0 || ''
         document.querySelector('.line-2').innerHTML = data.f1 || ''
