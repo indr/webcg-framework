@@ -1,8 +1,24 @@
 # webcg-framework
 
+webcg-framework is a framework to create and develop HTML templates for CasparCG and WebCG. The framework provides an API to listen for AMCP commands, automatically parses the XML or JSON data to a JavaScript object, and provides a lazy-load injection for the [webcg-devtools](https://github.com/indr/webcg-devtools).
+
+Running examples can be found at http://indr.github.io/webcg-framework/ and https://indr.github.io/webcg-adobe-animate-adapter/.
+
+## Installation
+
+Download the [latest release](https://github.com/indr/webcg-framework/releases) and extract and copy the files in the same folder as your HTML template. Add a script reference  `webcg-framework.umd.js` in your HTML file like:
+
+`<script src="webcg-framework.umd.js"></script>`
+
+You must not add a reference to `webcg-devtools.umd.js`. If you open your template in a browser and add `?debug=true` to bring up the DevTools, the framework will lazyingly load `webcg-devtools.umd.js` from the same directory.
+
 ## API
 
+Have a look at the [example-lower-third](https://github.com/indr/webcg-framework/blob/master/docs/example-lower-third.html) template to see how to use the API. A live version of this template can be found at fond at https://indr.github.io/webcg-framework/example-lower-third.html?debug=true.
+
 ### Methods
+
+The webcg-framework exposes a global object `webcg` with these methods:
 
 #### addEventListener(type, listener)  
 
@@ -10,7 +26,7 @@ Register an event handler to a specific event type and/or AMCP command.
 
 `type`: A case-sensitive string representing the event type, AMCP command and/or invoked function to listen for. For example `play`, `stop`, `update`, `data`, `myfunc1`.
   
-`listener`: The JavaScript function that receives a notification (an object that implements the [CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) interface) when an event of the specified type occurs.
+`listener`: The JavaScript function that receives a notification when an event of the specified type occurs.
 
 #### removeEventListener(type, listener)
 
