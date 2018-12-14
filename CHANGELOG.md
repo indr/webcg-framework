@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/indr/webcg-framework/compare/v2.1.1...v2.2.0) (2018-12-14)
+
+
+### Features
+
+* add window.debugData ([c327703](https://github.com/indr/webcg-framework/commit/c327703))
+* prevent play or stop being called consecutively ([35d346d](https://github.com/indr/webcg-framework/commit/35d346d))
+
+
+
 <a name="2.1.1"></a>
 ## [2.1.1](https://github.com/indr/webcg-framework/compare/v2.1.0...v2.1.1) (2018-09-21)
 

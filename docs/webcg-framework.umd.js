@@ -4,7 +4,7 @@
   (factory());
 }(this, (function () { 'use strict';
 
-  var version = "2.1.1";
+  var version = "2.2.0";
 
   var Parser = (function () {
     function Parser () {}
@@ -55,16 +55,18 @@
 
   var FUNCTIONS = ['play', 'stop', 'next', 'update'];
 
+  var State = Object.freeze({ 'stopped': 0, 'playing': 1 });
+
   var WebCG = function WebCG (window) {
     var this$1 = this;
 
     this._listeners = {};
     this._window = window;
-
     FUNCTIONS.forEach(function (each) {
       this$1._window[each] = this$1[each].bind(this$1);
       this$1._window[each].webcg = true;
     });
+    this._state = State.stopped;
 
     // Aliases
     this.on = this.addEventListener;
@@ -104,11 +106,17 @@
   };
 
   WebCG.prototype.play = function play () {
-    this.dispatch('play');
+    if (this._state !== State.playing) {
+      this.dispatch('play');
+      this._state = State.playing;
+    }
   };
 
   WebCG.prototype.stop = function stop () {
-    this.dispatch('stop');
+    if (this._state === State.playing) {
+      this.dispatch('stop');
+      this._state = State.stopped;
+    }
   };
 
   WebCG.prototype.next = function next () {
