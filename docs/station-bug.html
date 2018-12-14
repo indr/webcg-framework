@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>station-bug.html</title>
+    <script src="webcg-framework.umd.js"></script>
+    <style type="text/css">
+        body {
+            overflow: hidden;
+            font-family: Verdana, Geneva, sans-serif;
+        }
+
+        .overlay {
+            opacity: 0;
+            position: absolute;
+            top: 5vh;
+            right: 5vw;
+        }
+
+        .overlay img {
+            width: 10vw;
+        }
+    </style>
+    <script type="text/javascript">
+      webcg.on('play', function () {
+        const overlay = document.querySelector('.overlay')
+        overlay.style.opacity = 1
+      })
+
+      webcg.on('stop', function () {
+        const overlay = document.querySelector('.overlay')
+        overlay.style.opacity = 1
+      })
+    </script>
+</head>
+<body>
+<div class="overlay">
+    <img src="casparlogo.png">
+</div>
+</body>
+</html>
