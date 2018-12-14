@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.2.1"></a>
+## [2.2.1](https://github.com/indr/webcg-framework/compare/v2.2.0...v2.2.1) (2018-12-14)
+
+
+### Bug Fixes
+
+* update webcg-devtools@1.3.1 ([eb833ce](https://github.com/indr/webcg-framework/commit/eb833ce))
+
+
+
 <a name="2.2.0"></a>
 # [2.2.0](https://github.com/indr/webcg-framework/compare/v2.1.1...v2.2.0) (2018-12-14)
 
