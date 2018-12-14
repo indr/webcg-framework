@@ -2,15 +2,17 @@ import Parser from './Parser.js'
 
 const FUNCTIONS = ['play', 'stop', 'next', 'update']
 
+const State = Object.freeze({ 'stopped': 0, 'playing': 1 })
+
 class WebCG {
   constructor (window) {
     this._listeners = {}
     this._window = window
-
     FUNCTIONS.forEach(each => {
       this._window[each] = this[each].bind(this)
       this._window[each].webcg = true
     })
+    this._state = State.stopped
 
     // Aliases
     this.on = this.addEventListener
@@ -50,11 +52,17 @@ class WebCG {
   }
 
   play () {
-    this.dispatch('play')
+    if (this._state !== State.playing) {
+      this.dispatch('play')
+      this._state = State.playing
+    }
   }
 
   stop () {
-    this.dispatch('stop')
+    if (this._state === State.playing) {
+      this.dispatch('stop')
+      this._state = State.stopped
+    }
   }
 
   next () {

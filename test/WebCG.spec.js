@@ -26,6 +26,7 @@ describe('WebCG', () => {
     webcg.addEventListener('stop', () => {
       done()
     })
+    webcg.play()
     window.stop()
   })
 
@@ -152,5 +153,35 @@ describe('WebCG', () => {
       done()
     }.bind(that))
     window.test('one', 2, 'three')
+  })
+
+  it('does not trigger play consecutively', () => {
+    let count = 0
+    webcg.addEventListener('play', () => {
+      count++
+    })
+    webcg.play()
+    webcg.play()
+    expect(count).to.equal(1)
+  })
+
+  it('does not trigger stop consecutively', () => {
+    let count = 0
+    webcg.addEventListener('stop', () => {
+      count++
+    })
+    webcg.play()
+    webcg.stop()
+    webcg.stop()
+    expect(count).to.equal(1)
+  })
+
+  it('does not trigger stop before play', () => {
+    let count = 0
+    webcg.addEventListener('stop', () => {
+      count++
+    })
+    webcg.stop()
+    expect(count).to.equal(0)
   })
 })
