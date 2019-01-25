@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.3.0"></a>
+# [2.3.0](https://github.com/indr/webcg-framework/compare/v2.2.1...v2.3.0) (2019-01-25)
+
+
+### Bug Fixes
+
+* remove substitution strings from console.log ([6b8143b](https://github.com/indr/webcg-framework/commit/6b8143b))
+
+
+### Features
+
+* add command buffering ([48b4f01](https://github.com/indr/webcg-framework/commit/48b4f01))
+
+
+
 <a name="2.2.1"></a>
 ## [2.2.1](https://github.com/indr/webcg-framework/compare/v2.2.0...v2.2.1) (2018-12-14)
 

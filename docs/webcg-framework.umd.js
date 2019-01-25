@@ -4,7 +4,7 @@
   (factory());
 }(this, (function () { 'use strict';
 
-  var version = "2.2.1";
+  var version = "2.3.0";
 
   var Parser = (function () {
     function Parser () {}
@@ -67,10 +67,7 @@
       this$1._window[each].webcg = true;
     });
     this._state = State.stopped;
-
-    // Aliases
-    this.on = this.addEventListener;
-    this.off = this.removeEventListener;
+    this._bufferCommands = false;
   };
 
   WebCG.prototype.addEventListener = function addEventListener (type, listener) {
@@ -78,6 +75,18 @@
     var listeners = this._listeners[type] = this._listeners[type] || [];
     listeners.push(listener);
     this._addWindowFunction(type);
+  };
+
+  WebCG.prototype._addWindowFunction = function _addWindowFunction (name) {
+    if (typeof this._window[name] === 'function' && this._window[name].webcg) { return }
+
+    this._window[name] = this.invokeFunction.bind(this, name);
+    this._window[name].webcg = true;
+  };
+
+  WebCG.prototype.invokeFunction = function invokeFunction (name) {
+    if (this._bufferCommand.apply(this, ['_dispatch'].concat(Array.prototype.slice.call(arguments, 0)))) { return }
+    this._dispatch.apply(this, arguments);
   };
 
   WebCG.prototype.removeEventListener = function removeEventListener (type, listener) {
@@ -92,54 +101,67 @@
     }
   };
 
-  WebCG.prototype._addWindowFunction = function _addWindowFunction (name) {
-    if (typeof this._window[name] === 'function' && this._window[name].webcg) { return }
-
-    this._window[name] = this.dispatch.bind(this, name);
-    this._window[name].webcg = true;
-  };
-
   WebCG.prototype._removeWindowFunction = function _removeWindowFunction (name) {
     if (FUNCTIONS.indexOf(name) >= 0) { return }
     if (typeof this._window[name] !== 'function' || !this._window[name].webcg) { return }
     delete this._window[name];
   };
 
+  WebCG.prototype.bufferCommands = function bufferCommands () {
+    this._bufferCommands = true;
+    this._commandQueue = [];
+  };
+
+  WebCG.prototype.flushCommands = function flushCommands () {
+      var this$1 = this;
+
+    this._bufferCommands = false;
+    this._commandQueue.forEach(function (each) {
+      this$1[each.name].apply(this$1, each.args);
+    });
+    this._commandQueue = [];
+  };
+
   WebCG.prototype.play = function play () {
+    if (this._bufferCommand('play')) { return }
     if (this._state !== State.playing) {
-      this.dispatch('play');
+      this._dispatch('play');
       this._state = State.playing;
     }
   };
 
   WebCG.prototype.stop = function stop () {
+    if (this._bufferCommand('stop')) { return }
     if (this._state === State.playing) {
-      this.dispatch('stop');
+      this._dispatch('stop');
       this._state = State.stopped;
     }
   };
 
   WebCG.prototype.next = function next () {
-    this.dispatch('next');
+    if (this._bufferCommand('next')) { return }
+    this._dispatch('next');
   };
 
   WebCG.prototype.update = function update (data) {
-    var handled = this.dispatch('update', data);
+    if (this._bufferCommand('update', data)) { return }
+    var handled = this._dispatch('update', data);
     if (!handled) {
       var parsed = new Parser().parse(data);
-      this.dispatch('data', parsed);
+      this._dispatch('data', parsed);
     }
   };
 
-  WebCG.prototype._getListeners = function _getListeners (type) {
-    this._listeners[type] = this._listeners[type] || [];
-    return this._listeners[type]
+  WebCG.prototype._bufferCommand = function _bufferCommand (name) {
+    if (!this._bufferCommands) { return false }
+    var args = Array.prototype.slice.call(arguments, 1);
+    this._commandQueue.push({ name: name, args: args });
+    return true
   };
 
-  WebCG.prototype.dispatch = function dispatch (type, arg) {
+  WebCG.prototype._dispatch = function _dispatch (type) {
       var arguments$1 = arguments;
 
-    Array.prototype.slice.call(arguments, 1);
     var listeners = this._getListeners(type);
     var handled = false;
     for (var i = listeners.length - 1; i >= 0 && handled === false; i--) {
@@ -150,6 +172,15 @@
     }
     return handled
   };
+
+  WebCG.prototype._getListeners = function _getListeners (type) {
+    this._listeners[type] = this._listeners[type] || [];
+    return this._listeners[type]
+  };
+
+  // Aliases
+  WebCG.prototype.on = WebCG.prototype.addEventListener;
+  WebCG.prototype.off = WebCG.prototype.removeEventListener;
 
   var initWebCg = function (window) {
     window.webcg = new WebCG(window);
@@ -183,7 +214,7 @@
    * When required globally
    */
   if (typeof (window) !== 'undefined') {
-    console.log('[webcg-framework] version %s', version);
+    console.log('[webcg-framework] version ' + version);
     boot(window);
   }
 
