@@ -13,10 +13,6 @@ class WebCG {
       this._window[each].webcg = true
     })
     this._state = State.stopped
-
-    // Aliases
-    this.on = this.addEventListener
-    this.off = this.removeEventListener
   }
 
   addEventListener (type, listener) {
@@ -77,11 +73,6 @@ class WebCG {
     }
   }
 
-  _getListeners (type) {
-    this._listeners[type] = this._listeners[type] || []
-    return this._listeners[type]
-  }
-
   dispatch (type, arg) {
     Array.prototype.slice.call(arguments, 1)
     const listeners = this._getListeners(type)
@@ -94,6 +85,15 @@ class WebCG {
     }
     return handled
   }
+
+  _getListeners (type) {
+    this._listeners[type] = this._listeners[type] || []
+    return this._listeners[type]
+  }
 }
+
+// Aliases
+WebCG.prototype.on = WebCG.prototype.addEventListener
+WebCG.prototype.off = WebCG.prototype.removeEventListener
 
 export default WebCG
