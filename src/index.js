@@ -5,6 +5,6 @@ import { boot } from './main'
  * When required globally
  */
 if (typeof (window) !== 'undefined') {
-  console.log('[webcg-framework] version %s', version)
+  console.log('[webcg-framework] version ' + version)
   boot(window)
 }
