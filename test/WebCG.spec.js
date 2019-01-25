@@ -143,13 +143,22 @@ describe('WebCG', () => {
     expect(typeof window.play).to.equal('function')
   })
 
+  it('can invoke custom function without arguments', done => {
+    const that = {}
+    webcg.addEventListener('test', function () {
+      expect(this).to.equal(that)
+      done()
+    }.bind(that))
+    window.test()
+  })
+
   it('can invoke custom function with multiple arguments', done => {
     const that = {}
     webcg.addEventListener('test', function (arg1, arg2, arg3) {
+      expect(this).to.equal(that)
       expect(arg1).to.equal('one')
       expect(arg2).to.equal(2)
       expect(arg3).to.equal('three')
-      expect(this).to.equal(that)
       done()
     }.bind(that))
     window.test('one', 2, 'three')
@@ -183,5 +192,35 @@ describe('WebCG', () => {
     })
     webcg.stop()
     expect(count).to.equal(0)
+  })
+
+  it('can buffer and flush commands', () => {
+    let count = 0
+    webcg.addEventListener('update', raw => {
+      expect(count).to.equal(0)
+      expect(raw).to.equal('{"data":1}')
+      count++
+    })
+    webcg.addEventListener('play', () => {
+      expect(count).to.equal(1)
+      count++
+    })
+    const that = {}
+    webcg.addEventListener('test', function (p1, p2) {
+      expect(count).to.equal(2)
+      expect(this).to.equal(that)
+      expect(p1).to.equal('arg1')
+      expect(p2).to.equal('arg2')
+      count++
+    }.bind(that))
+
+    webcg.bufferCommands()
+    webcg.update(JSON.stringify({ data: 1 }))
+    webcg.play()
+    window.test('arg1', 'arg2')
+    expect(count).to.equal(0)
+
+    webcg.flushCommands()
+    expect(count).to.equal(3)
   })
 })

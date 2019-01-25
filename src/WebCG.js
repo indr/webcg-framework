@@ -13,6 +13,7 @@ class WebCG {
       this._window[each].webcg = true
     })
     this._state = State.stopped
+    this._bufferCommands = false
   }
 
   addEventListener (type, listener) {
@@ -20,6 +21,18 @@ class WebCG {
     const listeners = this._listeners[type] = this._listeners[type] || []
     listeners.push(listener)
     this._addWindowFunction(type)
+  }
+
+  _addWindowFunction (name) {
+    if (typeof this._window[name] === 'function' && this._window[name].webcg) return
+
+    this._window[name] = this.invokeFunction.bind(this, name)
+    this._window[name].webcg = true
+  }
+
+  invokeFunction (name) {
+    if (this._bufferCommand.apply(this, ['_dispatch'].concat(Array.prototype.slice.call(arguments, 0)))) return
+    this._dispatch.apply(this, arguments)
   }
 
   removeEventListener (type, listener) {
@@ -34,47 +47,63 @@ class WebCG {
     }
   }
 
-  _addWindowFunction (name) {
-    if (typeof this._window[name] === 'function' && this._window[name].webcg) return
-
-    this._window[name] = this.dispatch.bind(this, name)
-    this._window[name].webcg = true
-  }
-
   _removeWindowFunction (name) {
     if (FUNCTIONS.indexOf(name) >= 0) return
     if (typeof this._window[name] !== 'function' || !this._window[name].webcg) return
     delete this._window[name]
   }
 
+  bufferCommands () {
+    this._bufferCommands = true
+    this._commandQueue = []
+  }
+
+  flushCommands () {
+    this._bufferCommands = false
+    this._commandQueue.forEach(each => {
+      this[each.name].apply(this, each.args)
+    })
+    this._commandQueue = []
+  }
+
   play () {
+    if (this._bufferCommand('play')) return
     if (this._state !== State.playing) {
-      this.dispatch('play')
+      this._dispatch('play')
       this._state = State.playing
     }
   }
 
   stop () {
+    if (this._bufferCommand('stop')) return
     if (this._state === State.playing) {
-      this.dispatch('stop')
+      this._dispatch('stop')
       this._state = State.stopped
     }
   }
 
   next () {
-    this.dispatch('next')
+    if (this._bufferCommand('next')) return
+    this._dispatch('next')
   }
 
   update (data) {
-    const handled = this.dispatch('update', data)
+    if (this._bufferCommand('update', data)) return
+    const handled = this._dispatch('update', data)
     if (!handled) {
       const parsed = new Parser().parse(data)
-      this.dispatch('data', parsed)
+      this._dispatch('data', parsed)
     }
   }
 
-  dispatch (type, arg) {
-    Array.prototype.slice.call(arguments, 1)
+  _bufferCommand (name) {
+    if (!this._bufferCommands) return false
+    const args = Array.prototype.slice.call(arguments, 1)
+    this._commandQueue.push({ name, args })
+    return true
+  }
+
+  _dispatch (type) {
     const listeners = this._getListeners(type)
     let handled = false
     for (let i = listeners.length - 1; i >= 0 && handled === false; i--) {
