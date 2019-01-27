@@ -7,26 +7,35 @@
     <script src="//cdn.jsdelivr.net/npm/velocity-animate@1.5/velocity.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/velocity-animate@1.5/velocity.ui.min.js"></script>
     <style type="text/css">
-        body {
-            overflow: hidden;
+        html {
             font-family: Verdana, Geneva, sans-serif;
+            font-size: 4vh; /* 43.2px at 1080p */
+            overflow: hidden;
         }
 
         .overlay {
             opacity: 0;
             position: absolute;
-            left: 5vw;
-            bottom: 5vh;
-            max-width: 90vw;
+
+            /* Equal margin to left and bottom, 38.4px at 1080p */
+            left: 2vmax;
+            bottom: 2vmax;
+
+            /* Set max-width, which is 100 - 2 * left, 1843.2px at 1080px */
+            max-width: 96vmax;
         }
 
         .line {
-            padding: 8px;
+            /* Define some padding relative to the font size */
+            padding: 0.2em;
+
+            /* If there is more text than the element can fit, prevent wrapping and overflow */
             white-space: nowrap;
             overflow: hidden;
         }
 
         .line:empty {
+            /* Hide empty line, both title or subtitle */
             display: none;
         }
 
@@ -45,6 +54,8 @@
     <script type="text/javascript">
       window.debugData = { 'f0': 'Lower third with a subtitle', 'f1': 'and animated with VelocityJS' }
 
+      const duration = 1000
+
       webcg.on('data', function (data) {
         document.querySelector('.line-1').innerHTML = data.f0 || ''
         document.querySelector('.line-2').innerHTML = data.f1 || ''
@@ -52,21 +63,24 @@
 
       webcg.on('play', function () {
         const overlay = document.querySelector('.overlay')
-        Velocity(overlay, 'transition.swoopIn', { duration: 1500 })
+        Velocity(overlay, 'transition.swoopIn', { duration })
       })
 
       webcg.on('stop', function () {
         const overlay = document.querySelector('.overlay')
-        Velocity(overlay, 'transition.flipYOut', { duration: 1500 })
+        Velocity(overlay, 'transition.flipYOut', { duration })
       })
 
       webcg.on('next', function () {
         const overlay = document.querySelector('.overlay')
-        Velocity(overlay, 'callout.pulse', { duration: 1500 })
+        Velocity(overlay, 'callout.pulse', { duration })
       })
     </script>
 </head>
 <body>
+<section style="font-size: initial;">
+    <h1>lower-third-velocity-animations.html</h1>
+</section>
 <div class="overlay">
     <div class="line line-1">Lower third with a subtitle</div>
     <div class="line line-2">and animated with VelocityJS</div>

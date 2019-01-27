@@ -5,39 +5,48 @@
     <title>lower-third-css-animations.html</title>
     <script src="webcg-framework.umd.js"></script>
     <style type="text/css">
-        body {
-            overflow: hidden;
+        html {
             font-family: Verdana, Geneva, sans-serif;
+            font-size: 4vh; /* 43.2px at 1080p */
+            overflow: hidden;
         }
 
         .overlay {
             opacity: 0;
             position: absolute;
-            left: 5vw;
-            bottom: 5vh;
-            max-width: 90vw;
+
+            /* Equal margin to left and bottom, 38.4px at 1080p */
+            left: 2vmax;
+            bottom: 2vmax;
+
+            /* Set max-width, which is 100 - 2 * left, 1843.2px at 1080px */
+            max-width: 96vmax;
         }
 
         .line {
-            padding: 8px;
+            /* Define some padding relative to the font size */
+            padding: 0.2em;
+
+            /* If there is more text than the element can fit, prevent wrapping and overflow */
             white-space: nowrap;
             overflow: hidden;
         }
 
         .line:empty {
+            /* Hide empty line, both title or subtitle */
             display: none;
         }
 
         .line-1 {
             background: #29539b linear-gradient(315deg, #29539b 0%, #1e3b70 74%);
             color: white;
-            font-size: 40px;
+            font-size: 1rem;
         }
 
         .line-2 {
             background: #f6f6f6 linear-gradient(315deg, #f6f6f6 0%, #e9e9e9 74%);
             color: #222;
-            font-size: 30px;
+            font-size: 0.8rem;
         }
 
         .intro {
@@ -56,11 +65,11 @@
 
         @keyframes slideIn {
             from {
-                bottom: -10vh;
+                bottom: -10vmax;
                 opacity: 0;
             }
             to {
-                bottom: 5vh;
+                bottom: 2vmax;
                 opacity: 1;
             }
         }
@@ -107,6 +116,9 @@
     </script>
 </head>
 <body>
+<section style="font-size: initial;">
+    <h1>lower-third-css-animations.html</h1>
+</section>
 <div class="overlay">
     <div class="line line-1">Lower third with a subtitle</div>
     <div class="line line-2">and animated with CSS animations</div>
