@@ -22,6 +22,17 @@ describe('WebCG', () => {
     window.play()
   })
 
+  it('catches exceptions thrown by play listener', () => {
+    let count = 0
+    expect(() => {
+      webcg.addEventListener('play', () => { count++ })
+      webcg.addEventListener('play', () => { throw new Error('Exception in play event listener') })
+      webcg.addEventListener('play', () => { count++ })
+      webcg.play()
+    }).to.not.throw()
+    expect(count).to.equal(2)
+  })
+
   it('triggers stop on window.stop', done => {
     webcg.addEventListener('stop', () => {
       done()
@@ -30,11 +41,34 @@ describe('WebCG', () => {
     window.stop()
   })
 
+  it('catches exceptions thrown by stop listener', () => {
+    let count = 0
+    expect(() => {
+      webcg.addEventListener('stop', () => { count++ })
+      webcg.addEventListener('stop', () => { throw new Error('Exception in stop event listener') })
+      webcg.addEventListener('stop', () => { count++ })
+      webcg.play()
+      webcg.stop()
+    }).to.not.throw()
+    expect(count).to.equal(2)
+  })
+
   it('triggers next on window.next', done => {
     webcg.addEventListener('next', () => {
       done()
     })
     window.next()
+  })
+
+  it('catches exceptions thrown by next listener', () => {
+    let count = 0
+    expect(() => {
+      webcg.addEventListener('next', () => { count++ })
+      webcg.addEventListener('next', () => { throw new Error('Exception in next event listener') })
+      webcg.addEventListener('next', () => { count++ })
+      webcg.next()
+    }).to.not.throw()
+    expect(count).to.equal(2)
   })
 
   it('triggers update on window.update', done => {
@@ -50,6 +84,17 @@ describe('WebCG', () => {
       done()
     })
     window.update('value')
+  })
+
+  it('catches exceptions thrown by update listener', () => {
+    let count = 0
+    expect(() => {
+      webcg.addEventListener('update', () => { count++ })
+      webcg.addEventListener('update', () => { throw new Error('Exception in update event listener') })
+      webcg.addEventListener('update', () => { count++ })
+      webcg.update('value')
+    }).to.not.throw()
+    expect(count).to.equal(2)
   })
 
   it('triggers data with first argument', done => {
@@ -76,15 +121,34 @@ describe('WebCG', () => {
     window.update('<templateData></templateData>')
   })
 
+  it('catches exceptions thrown by data listener', () => {
+    let count = 0
+    expect(() => {
+      webcg.addEventListener('data', () => { count++ })
+      webcg.addEventListener('data', () => { throw new Error('Exception in data event listener') })
+      webcg.addEventListener('data', () => { count++ })
+      webcg.update('value')
+    }).to.not.throw()
+    expect(count).to.equal(2)
+  })
+
   it('does not trigger data when update handler returns handled=true', done => {
     webcg.addEventListener('data', () => {
       done('unexpected call to data')
     })
     webcg.addEventListener('update', () => {
       setTimeout(done, 500)
-      return true // handled, e.preventDefault()
+      return true // handled
     })
     window.update('value')
+  })
+
+  it('does trigger data when update handler throws exception', done => {
+    webcg.addEventListener('update', () => {
+      throw new Error('Exception in update event listener')
+    })
+    webcg.addEventListener('data', () => { done() })
+    webcg.update('value')
   })
 
   it('triggers listeners in reverse order', done => {

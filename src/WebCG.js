@@ -105,11 +105,16 @@ class WebCG {
 
   _dispatch (type) {
     const listeners = this._getListeners(type)
+    const args = Array.prototype.slice.call(arguments, 1)
     let handled = false
     for (let i = listeners.length - 1; i >= 0 && handled === false; i--) {
       const listener = listeners[i]
-      if (typeof listener === 'function') {
-        handled = !!listener.apply(null, Array.prototype.slice.call(arguments, 1))
+      if (typeof listener !== 'function') continue
+      try {
+        handled = !!listener.apply(null, args)
+      } catch (error) {
+        console.warn(`[webcg-framework] ${type} event listener threw ${error.constructor.name}: ${error.message}`)
+        handled = false
       }
     }
     return handled
