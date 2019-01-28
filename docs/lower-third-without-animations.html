@@ -2,10 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>lower-third-velocity.html</title>
+    <title>lower-third-without-animations.html</title>
     <script src="webcg-framework.umd.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/velocity-animate@1.5/velocity.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/velocity-animate@1.5/velocity.ui.min.js"></script>
     <style type="text/css">
         html {
             /* Explicitly set background color */
@@ -73,10 +71,7 @@
 
     <script type="text/javascript">
       // Set initial data for webcg-devtools
-      window.debugData = { 'f0': 'Lower third with a subtitle', 'f1': 'and animated with VelocityJS' }
-
-      // Set the default animation/transition duration to 1000 milliseconds
-      const defaultDurationMs = 1000
+      window.debugData = { 'f0': 'Lower third with a subtitle', 'f1': 'and without animations' }
 
       webcg.on('data', function (data) {
         document.querySelector('.line-1').innerHTML = data.f0 || ''
@@ -85,27 +80,22 @@
 
       webcg.on('play', function () {
         const overlay = document.querySelector('.overlay')
-        Velocity(overlay, 'transition.swoopIn', { duration: defaultDurationMs })
+        overlay.style.opacity = 1
       })
 
       webcg.on('stop', function () {
         const overlay = document.querySelector('.overlay')
-        Velocity(overlay, 'transition.flipYOut', { duration: defaultDurationMs })
-      })
-
-      webcg.on('next', function () {
-        const overlay = document.querySelector('.overlay')
-        Velocity(overlay, 'callout.pulse', { duration: defaultDurationMs })
+        overlay.style.opacity = 0
       })
     </script>
 </head>
 <body>
 <section style="font-size: initial;">
-    <h1>lower-third-velocity-animations.html</h1>
+    <h1>lower-third-without-animations.html</h1>
 </section>
 <div class="overlay">
     <div class="line line-1">Lower third with a subtitle</div>
-    <div class="line line-2">and animated with VelocityJS</div>
+    <div class="line line-2">and without animations</div>
 </div>
 </body>
 </html>
