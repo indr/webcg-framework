@@ -4,7 +4,7 @@
   (factory());
 }(this, (function () { 'use strict';
 
-  var version = "2.3.0";
+  var version = "2.4.0";
 
   var Parser = (function () {
     function Parser () {}
@@ -160,14 +160,17 @@
   };
 
   WebCG.prototype._dispatch = function _dispatch (type) {
-      var arguments$1 = arguments;
-
     var listeners = this._getListeners(type);
+    var args = Array.prototype.slice.call(arguments, 1);
     var handled = false;
     for (var i = listeners.length - 1; i >= 0 && handled === false; i--) {
       var listener = listeners[i];
-      if (typeof listener === 'function') {
-        handled = !!listener.apply(null, Array.prototype.slice.call(arguments$1, 1));
+      if (typeof listener !== 'function') { continue }
+      try {
+        handled = !!listener.apply(null, args);
+      } catch (error) {
+        console.warn(("[webcg-framework] " + type + " event listener threw " + (error.constructor.name) + ": " + (error.message)));
+        handled = false;
       }
     }
     return handled
