@@ -33,6 +33,18 @@ describe('WebCG', () => {
     expect(count).to.equal(1)
   })
 
+  it('once only triggers handler once when handler throws error', () => {
+    let count = 0
+    const handler = () => {
+      count++
+      throw new Error('Exception in next event listener')
+    }
+    webcg.once('next', handler)
+    webcg.next()
+    webcg.next()
+    expect(count).to.equal(1)
+  })
+
   it('triggers play on window.play', done => {
     webcg.addEventListener('play', () => {
       done()

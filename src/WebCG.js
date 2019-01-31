@@ -25,12 +25,11 @@ class WebCG {
 
   once (type, listener) {
     if (typeof listener !== 'function') throw new TypeError('listener must be a function')
-    const wrapper = function () {
-      const result = listener.apply(null, arguments)
-      this.removeEventListener(type, wrapper)
-      return result
+    const onceWrapper = function () {
+      this.removeEventListener(type, onceWrapper)
+      return listener.apply(null, arguments)
     }.bind(this)
-    this.addEventListener(type, wrapper)
+    this.addEventListener(type, onceWrapper)
   }
 
   _addWindowFunction (name) {
