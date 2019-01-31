@@ -10,9 +10,27 @@ describe('WebCG', () => {
     webcg = new WebCG(window)
   })
 
-  it('throws when adding an invalid event listener', () => {
+  it('addEventListener throws when adding an invalid event listener', () => {
     expect(() => webcg.addEventListener('play', ''))
       .to.throw(TypeError, 'listener must be a function')
+  })
+
+  it('once throws when adding an invalid event listener', () => {
+    expect(() => webcg.once('play', ''))
+      .to.throw(TypeError, 'listener must be a function')
+  })
+
+  it('once only triggers handler once', () => {
+    let count = 0
+    const handler = () => {
+      count++
+    }
+    webcg.once('next', handler)
+    webcg.next()
+    webcg.next()
+    webcg.off('next', handler)
+    window.next()
+    expect(count).to.equal(1)
   })
 
   it('triggers play on window.play', done => {
@@ -207,7 +225,7 @@ describe('WebCG', () => {
     expect(typeof window.play).to.equal('function')
   })
 
-  it('can invoke custom function without arguments', done => {
+  it('addEventListener can invoke custom function without arguments', done => {
     const that = {}
     webcg.addEventListener('test', function () {
       expect(this).to.equal(that)
@@ -216,9 +234,30 @@ describe('WebCG', () => {
     window.test()
   })
 
-  it('can invoke custom function with multiple arguments', done => {
+  it('once can invoke custom function without arguments', done => {
+    const that = {}
+    webcg.once('test', function () {
+      expect(this).to.equal(that)
+      done()
+    }.bind(that))
+    window.test()
+  })
+
+  it('addEventListener can invoke custom function with multiple arguments', done => {
     const that = {}
     webcg.addEventListener('test', function (arg1, arg2, arg3) {
+      expect(this).to.equal(that)
+      expect(arg1).to.equal('one')
+      expect(arg2).to.equal(2)
+      expect(arg3).to.equal('three')
+      done()
+    }.bind(that))
+    window.test('one', 2, 'three')
+  })
+
+  it('once can invoke custom function with multiple arguments', done => {
+    const that = {}
+    webcg.once('test', function (arg1, arg2, arg3) {
       expect(this).to.equal(that)
       expect(arg1).to.equal('one')
       expect(arg2).to.equal(2)
@@ -286,5 +325,18 @@ describe('WebCG', () => {
 
     webcg.flushCommands()
     expect(count).to.equal(3)
+  })
+
+  it('aliases on and off', () => {
+    let count = 0
+    const handler = () => {
+      count++
+    }
+    webcg.on('next', handler)
+    webcg.next()
+    webcg.next()
+    webcg.off('next', handler)
+    window.next()
+    expect(count).to.equal(2)
   })
 })
