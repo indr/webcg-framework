@@ -1,7 +1,7 @@
 module.exports = function (config) {
   config.set({
-    browsers: ['PhantomJS'],
-    frameworks: ['mocha', 'sinon-chai', 'phantomjs-shim'],
+    browsers: ['ChromeHeadless'],
+    frameworks: ['mocha', 'sinon-chai'],
     reporters: ['spec', 'coverage'],
     files: [
       /**
@@ -11,14 +11,19 @@ module.exports = function (config) {
       { pattern: 'test/**/*.spec.js', watched: false }
     ],
     preprocessors: {
-      'test/**/*.spec.js': ['rollup', 'sourcemap', 'coverage']
+      'test/**/*.spec.js': ['rollup']
     },
     rollupPreprocessor: {
       /**
        * This is just a normal Rollup config object,
        * except that `input` is handled for you.
        */
-      plugins: [require('rollup-plugin-buble')()],
+      plugins: [
+        require('rollup-plugin-istanbul')({
+          exclude: ['test/**/*.js']
+        }),
+        require('rollup-plugin-buble')()
+      ],
       output: {
         format: 'iife', // Helps prevent naming collisions.
         name: 'webcgFramework', // Required for 'iife' format.
@@ -31,6 +36,7 @@ module.exports = function (config) {
         { type: 'lcov', subdir: '.' },
         { type: 'text-summary' }
       ]
-    }
+    },
+    singleRun: true
   })
 }
