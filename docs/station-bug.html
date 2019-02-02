@@ -3,22 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <title>station-bug.html</title>
+    <link rel="stylesheet" href="example.css">
     <script src="webcg-framework.umd.js"></script>
     <style type="text/css">
-        body {
+        html {
+            /* Explicitly set background color */
+            background-color: transparent;
+
+            /* Set default box-sizing to border-box for easier sizing of elements */
+            box-sizing: border-box;
+
+            /* Disable scrollbars by clipping page overflow */
             overflow: hidden;
+
+            /* Set default font family */
             font-family: Verdana, Geneva, sans-serif;
+
+            /* Set responsive root font size to 43.2px at 1080p */
+            font-size: 4vh;
+        }
+
+        *, *:before, *:after {
+            /* Make box-sizing property easy to change by components if required */
+            box-sizing: inherit;
         }
 
         .overlay {
+            /* Initially hide the overlay */
             opacity: 0;
+
+            /* Position overlay responsive with equal margin to top and right at 38.4px at 1080p */
             position: absolute;
-            top: 5vh;
-            right: 5vw;
+            top: 2vmax;
+            right: 2vmax;
         }
 
         .overlay img {
-            width: 10vw;
+            /* Set the width of the image to 8/100 of the view max width or height, which ever is bigger */
+            width: 8vmax;
+
+            /* Set some transparency effect for increased fanciness */
+            opacity: 0.7;
         }
     </style>
     <script type="text/javascript">
@@ -34,8 +59,11 @@
     </script>
 </head>
 <body>
+<section class="example">
+    <h1>station-bug.html</h1>
+</section>
 <div class="overlay">
-    <img src="casparlogo.png">
+    <img src="casparlogo.png" alt="">
 </div>
 </body>
 </html>

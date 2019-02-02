@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>responsive-design.html</title>
+    <link rel="stylesheet" href="example.css">
+    <script src="webcg-framework.umd.js"></script>
+    <style type="text/css">
+        html {
+            /* Explicitly set background color */
+            background-color: transparent;
+
+            /* Set default box-sizing to border-box for easier sizing of elements */
+            box-sizing: border-box;
+
+            /* Disable scrollbars by clipping page overflow */
+            overflow: hidden;
+
+            /* Set default font family */
+            font-family: Verdana, Geneva, sans-serif;
+
+            /* Set responsive root font size to 43.2px at 1080p */
+            font-size: 4vh;
+        }
+
+        *, *:before, *:after {
+            /* Make box-sizing property easy to change by components if required */
+            box-sizing: inherit;
+        }
+
+        .overlay {
+            opacity: 0.7;
+            overflow: hidden;
+            background-color: #ddd;
+            border: solid black 1px;
+            color: black;
+        }
+
+        .absolute {
+            position: absolute;
+            top: 48px;
+            right: 48px;
+            width: 192px;
+            height: 192px;
+            font-size: 28.8px;
+        }
+
+        .responsive {
+            position: absolute;
+            top: 2.5vmax;
+            right: 2.5vmax;
+            width: 10vmax;
+            height: 10vmax;
+            font-size: 1.5vmax;
+        }
+
+        .overlay div.center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+<section class="example">
+    <h1>responsive-design.html</h1>
+    <p>This example demonstrates responsive design. There is two overlays: one which is sized and positioned with
+        absolute length units, and one which uses relative length units and therefor behaves responsive.</p>
+    <p>Play with the developer tools to resize the web page or change your browsers window size to see the effect. If you
+        set the size of the web page to 1920 x 1080 pixels (or you enter fullscreen mode with that screen resolution) you
+        will see the two overlays converge.</p>
+</section>
+<div class="overlay absolute">
+    <div class="center">absolute</div>
+</div>
+<div class="overlay responsive">
+    <div class="center">responsive</div>
+</div>
+</body>
+</html>

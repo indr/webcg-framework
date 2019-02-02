@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>lower-third-velocity.html</title>
+    <link rel="stylesheet" href="example.css">
     <script src="webcg-framework.umd.js"></script>
     <script src="//cdn.jsdelivr.net/npm/velocity-animate@1.5/velocity.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/velocity-animate@1.5/velocity.ui.min.js"></script>
@@ -20,7 +21,7 @@
             /* Set default font family */
             font-family: Verdana, Geneva, sans-serif;
 
-            /* Set resolution independent root font size to 43.2px at 1080p */
+            /* Set responsive root font size to 43.2px at 1080p */
             font-size: 4vh;
         }
 
@@ -33,7 +34,7 @@
             /* Initially hide the overlay */
             opacity: 0;
 
-            /* Position overlay resolution independent with equal margin to left and bottom, 38.4px at 1080p */
+            /* Position overlay responsive with equal margin to left and bottom, 38.4px at 1080p */
             position: absolute;
             left: 2vmax;
             bottom: 2vmax;
@@ -70,7 +71,6 @@
             font-size: 0.8rem;
         }
     </style>
-
     <script type="text/javascript">
       // Set initial data for webcg-devtools
       window.debugData = { 'f0': 'Lower third with a subtitle', 'f1': 'and animated with VelocityJS' }
@@ -79,8 +79,8 @@
       const defaultDurationMs = 1000
 
       webcg.on('data', function (data) {
-        document.querySelector('.line-1').innerHTML = data.f0 || ''
-        document.querySelector('.line-2').innerHTML = data.f1 || ''
+        document.querySelector('.line-1').innerHTML = data.f0 ? data.f0.text || data.f0 : ''
+        document.querySelector('.line-2').innerHTML = data.f1 ? data.f1.text || data.f1 : ''
       })
 
       webcg.on('play', function () {
@@ -100,7 +100,7 @@
     </script>
 </head>
 <body>
-<section style="font-size: initial;">
+<section class="example">
     <h1>lower-third-velocity-animations.html</h1>
 </section>
 <div class="overlay">

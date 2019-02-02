@@ -1,0 +1,14 @@
+section.example {
+    position: absolute;
+    top: 2vmax;
+    left: 2vmax;
+    max-width: 50%;
+    background-color: #eee;
+    color: #222;
+    font-size: initial;
+    padding: 0.1em 1em;
+}
+
+body {
+    margin: 0;
+}
