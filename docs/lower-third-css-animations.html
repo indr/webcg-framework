@@ -6,6 +6,11 @@
     <link rel="stylesheet" href="example.css">
     <script src="webcg-framework.umd.js"></script>
     <style type="text/css">
+        :root {
+            /* Define a variable for the margin of the overlay, 96px at 1080p */
+            --margin: 5vmax;
+        }
+
         html {
             /* Explicitly set background color */
             background-color: transparent;
@@ -32,21 +37,20 @@
             /* Initially hide the overlay */
             opacity: 0;
 
-            /* Position overlay responsive with equal margin to left and bottom, 38.4px at 1080p */
+            /* Position overlay with equal margin to the left and bottom */
             position: absolute;
-            left: 2vmax;
-            /* bottom has to match @keyframes slideOut */
-            bottom: 2vmax;
+            left: var(--margin);
+            bottom: var(--margin);
 
-            /* Set max-width, which is 100% - 2 * margin, 1843.2px at 1080px */
-            max-width: 96vmax;
+            /* Set a max-width to prevent going over the right margin at 100% - 2 * margin, 1728px at 1080p */
+            max-width: calc(100vw - 2 * var(--margin));
         }
 
         .line {
             /* Define padding relative to the font size */
             padding: 0.2em;
 
-            /* If there is more text than the element can fit, prevent wrapping and overflow */
+            /* Prevent text wrapping and hide overflow */
             white-space: nowrap;
             overflow: hidden;
         }
@@ -57,16 +61,20 @@
         }
 
         .line-1 {
-            /* Define colors and size of the first line */
+            /* Define background and text color */
             background: #29539b linear-gradient(315deg, #29539b 0%, #1e3b70 74%);
             color: white;
+
+            /* Calculated font size is 43.3px at 1080p */
             font-size: 1rem;
         }
 
         .line-2 {
-            /* Define colors and size of the second line */
+            /* Define background and text color */
             background: #f6f6f6 linear-gradient(315deg, #f6f6f6 0%, #e9e9e9 74%);
             color: #222;
+
+            /* Calculated font size is 34.56px at 1080p */
             font-size: 0.8rem;
         }
 
@@ -93,8 +101,7 @@
                 opacity: 0;
             }
             to {
-                /* bottom has to match .overlay */
-                bottom: 2vmax;
+                bottom: var(--margin);
                 opacity: 1;
             }
         }

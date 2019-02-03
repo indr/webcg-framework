@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>lower-third-without-animations.html</title>
+    <title>lower-third-responsive.html</title>
     <link rel="stylesheet" href="example.css">
     <script src="webcg-framework.umd.js"></script>
     <style type="text/css">
@@ -50,11 +50,6 @@
             overflow: hidden;
         }
 
-        .line:empty {
-            /* Hide empty line, both first or second */
-            display: none;
-        }
-
         .line-1 {
             /* Define background and text color */
             background: #29539b linear-gradient(315deg, #29539b 0%, #1e3b70 74%);
@@ -74,28 +69,20 @@
         }
     </style>
     <script type="text/javascript">
-      // Set initial data for webcg-devtools
-      window.debugData = { 'f0': 'Lower third with a subtitle', 'f1': 'and without animations' }
-
-      webcg.on('data', function (data) {
-        document.querySelector('.line-1').innerHTML = data.f0 ? data.f0.text || data.f0 : ''
-        document.querySelector('.line-2').innerHTML = data.f1 ? data.f1.text || data.f1 : ''
-      })
-
-      webcg.on('play', function () {
+      function play () {
         const overlay = document.querySelector('.overlay')
         overlay.style.opacity = 1
-      })
+      }
 
-      webcg.on('stop', function () {
+      function stop () {
         const overlay = document.querySelector('.overlay')
         overlay.style.opacity = 0
-      })
+      }
     </script>
 </head>
 <body>
 <section class="example">
-    <h1>lower-third-without-animations.html</h1>
+    <h1>lower-third-responsive.html</h1>
 </section>
 <div class="overlay">
     <div class="line line-1">Lower third with a subtitle</div>

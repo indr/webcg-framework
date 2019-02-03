@@ -1,14 +1,18 @@
+body {
+    margin: 0;
+}
+
 section.example {
-    position: absolute;
-    top: 2vmax;
-    left: 2vmax;
-    max-width: 50%;
+    margin: 16px;
     background-color: #eee;
     color: #222;
     font-size: initial;
     padding: 0.1em 1em;
+    text-align: justify;
 }
 
-body {
-    margin: 0;
+@media (min-width: 500px) {
+    section.example {
+        width: calc(500px - 2 * 16px);
+    }
 }
