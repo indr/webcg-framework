@@ -14,7 +14,7 @@ You must not add a reference to `webcg-devtools.umd.js`. If you open your templa
 
 ## API
 
-Have a look at the [example-lower-third](https://github.com/indr/webcg-framework/blob/master/docs/example-lower-third.html) template to see how to use the API. A live version of this template can be found at fond at https://indr.github.io/webcg-framework/example-lower-third.html?debug=true.
+Have a look at the example [lower-third](https://github.com/indr/webcg-framework/blob/master/docs/lower-third-css-animations.html) template to see how to use the API. A live version of this template can be found at fond at https://indr.github.io/webcg-framework/lower-third-css-animations.html?debug=true.
 
 ### Methods
 
@@ -48,7 +48,7 @@ Alias for `removeEventListener()`
 | `stop` | Fired when the template should play the outro animations and become invisible. |
 | `next` | Fired when the template should move the the next step in a multi step template. |
 | `update` | Fired when the template receives raw data. |
-| `data` | Fired after `update` with the raw data parsed as a JSON object. |
+| `data` | Fired after `update` with the raw data parsed as a JSON object. Handles component XML data, JSON strings and JavaScript objects. |
 
 ## Contributing
 
