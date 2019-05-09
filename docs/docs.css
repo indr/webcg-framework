@@ -2,7 +2,7 @@ body {
     margin: 0;
 }
 
-section.example {
+section.docs {
     margin: 16px;
     background-color: #eee;
     color: #222;
@@ -12,7 +12,7 @@ section.example {
 }
 
 @media (min-width: 500px) {
-    section.example {
+    section.docs {
         width: calc(500px - 2 * 16px);
     }
 }
