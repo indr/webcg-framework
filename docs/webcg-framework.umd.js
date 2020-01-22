@@ -1,12 +1,11 @@
-(function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory() :
+(function (factory) {
   typeof define === 'function' && define.amd ? define(factory) :
-  (factory());
-}(this, (function () { 'use strict';
+  factory();
+}((function () { 'use strict';
 
-  var version = "2.4.0";
+  var version = "2.5.0";
 
-  var Parser = (function () {
+  var Parser = /*@__PURE__*/(function () {
     function Parser () {}
 
     Parser.prototype.parse = function parse (raw) {
@@ -75,6 +74,15 @@
     var listeners = this._listeners[type] = this._listeners[type] || [];
     listeners.push(listener);
     this._addWindowFunction(type);
+  };
+
+  WebCG.prototype.once = function once (type, listener) {
+    if (typeof listener !== 'function') { throw new TypeError('listener must be a function') }
+    var onceWrapper = function () {
+      this.removeEventListener(type, onceWrapper);
+      return listener.apply(null, arguments)
+    }.bind(this);
+    this.addEventListener(type, onceWrapper);
   };
 
   WebCG.prototype._addWindowFunction = function _addWindowFunction (name) {

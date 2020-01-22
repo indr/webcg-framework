@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.5.0](https://github.com/indr/webcg-framework/compare/v2.4.0...v2.5.0) (2020-01-22)
+
+
+### Features
+
+* add once() to register an event handler that is automatically removed after the first call ([7bee75d](https://github.com/indr/webcg-framework/commit/7bee75dc54f70182298ba6cdeeb355170919c8da))
+
+
+### Bug Fixes
+
+* remove once event handler in case it throws an error ([94af4fd](https://github.com/indr/webcg-framework/commit/94af4fd5a2c17484e98774b31126d34502581c0c))
+
 <a name="2.4.0"></a>
 # [2.4.0](https://github.com/indr/webcg-framework/compare/v2.3.0...v2.4.0) (2019-01-28)
 
