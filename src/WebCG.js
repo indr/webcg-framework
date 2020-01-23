@@ -2,7 +2,7 @@ import Parser from './Parser.js'
 
 const FUNCTIONS = ['play', 'stop', 'next', 'update']
 
-const State = Object.freeze({ 'stopped': 0, 'playing': 1 })
+const State = Object.freeze({ stopped: 0, playing: 1 })
 
 class WebCG {
   constructor (window) {

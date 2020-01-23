@@ -11,7 +11,7 @@
     "dev": "rollup -c -w",
     "test": "standard && karma start karma.conf.js",
     "demo": "node server.js",
-    "release": "standard-version -a",
+    "release": "npm run test && standard-version -a",
     "version": "echo \"Error: use npm run release\" && exit 1"
   },
   "repository": {

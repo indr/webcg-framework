@@ -5,8 +5,8 @@ describe('Parser', () => {
     const parser = new Parser()
     const data = parser.parse('<templateData><componentData id="f0"><data id="text" value="textValue"/></componentData></templateData>')
     expect(data).to.deep.equal({
-      'f0': {
-        'text': 'textValue'
+      f0: {
+        text: 'textValue'
       }
     })
   })
@@ -21,7 +21,7 @@ describe('Parser', () => {
     const parser = new Parser()
     const data = parser.parse('{"f0":"value"}')
     expect(data).to.deep.equal({
-      'f0': 'value'
+      f0: 'value'
     })
   })
 
@@ -29,7 +29,7 @@ describe('Parser', () => {
     const parser = new Parser()
     const data = parser.parse({ f0: 'value' })
     expect(data).to.deep.equal({
-      'f0': 'value'
+      f0: 'value'
     })
   })
 })
