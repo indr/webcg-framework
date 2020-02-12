@@ -1,4 +1,4 @@
-const Parser = class {
+export default class Parser {
   parse (raw) {
     if (typeof raw === 'object') return raw
     if (typeof raw !== 'string') return null
@@ -40,5 +40,3 @@ const Parser = class {
     }
   }
 }
-
-export default Parser

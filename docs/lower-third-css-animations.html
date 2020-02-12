@@ -117,38 +117,48 @@
         }
     </style>
     <script type="text/javascript">
-      // Set initial data for webcg-devtools
-      window.debugData = { 'f0': 'Lower third with a subtitle', 'f1': 'and CSS animations' }
+    // Set initial data for webcg-devtools
+    window.debugData = { 'f0': 'Lower third with a subtitle', 'f1': 'and CSS animations' }
 
-      webcg.on('data', function (data) {
-        document.querySelector('.line-1').innerHTML = data.f0 ? data.f0.text || data.f0 : ''
-        document.querySelector('.line-2').innerHTML = data.f1 ? data.f1.text || data.f1 : ''
-      })
+    webcg.on('data', function (data) {
+      document.querySelector('.line-1').innerHTML = data.f0 ? data.f0.text || data.f0 : ''
+      document.querySelector('.line-2').innerHTML = data.f1 ? data.f1.text || data.f1 : ''
+    })
 
-      webcg.on('play', function () {
-        const overlay = document.querySelector('.overlay')
-        // Swap intro and outro classes
-        overlay.classList.add('intro')
-        overlay.classList.remove('outro')
+    webcg.on('play', function () {
+      const overlay = document.querySelector('.overlay')
+      // Swap intro and outro classes
+      overlay.classList.add('intro')
+      overlay.classList.remove('outro')
+      // Return promise that is resolved when the animation is over. WebCG will wait for this promise.
+      return new Promise(resolve => {
+        // Add the animationend event listener once
+        overlay.addEventListener('animationend', resolve, { once: true })
       })
+    })
 
-      webcg.on('stop', function () {
-        const overlay = document.querySelector('.overlay')
-        // Swap intro and outro classes
-        overlay.classList.remove('intro')
-        overlay.classList.add('outro')
+    webcg.on('stop', function () {
+      const overlay = document.querySelector('.overlay')
+      // Swap intro and outro classes
+      overlay.classList.remove('intro')
+      overlay.classList.add('outro')
+      // Return promise that is resolved when the animation is over. WebCG will wait for this promise.
+      return new Promise(resolve => {
+        // Add the animationend event listener once
+        overlay.addEventListener('animationend', resolve, { once: true })
       })
+    })
 
-      let invokeCount = 0
-      webcg.on('test', function () {
-        invokeCount++
-        document.querySelector('.line-1').innerHTML = 'invoked test ' + invokeCount + ' times'
-      })
+    let invokeCount = 0
+    webcg.on('test', function () {
+      invokeCount++
+      document.querySelector('.line-1').innerHTML = 'invoked test ' + invokeCount + ' times'
+    })
 
-      webcg.on('test', function (arg1, arg2) {
-        document.querySelector('.line-2').innerHTML = JSON.stringify(arg1) + ', ' +
-          JSON.stringify(arg2) + ', ' + new Date().toLocaleString()
-      })
+    webcg.on('test', function (arg1, arg2) {
+      document.querySelector('.line-2').innerHTML = JSON.stringify(arg1) + ', ' +
+        JSON.stringify(arg2) + ', ' + new Date().toLocaleString()
+    })
     </script>
 </head>
 <body>

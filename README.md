@@ -1,6 +1,6 @@
 # webcg-framework
 
-webcg-framework is a framework to create and develop HTML templates for CasparCG and WebCG. The framework provides an API to listen for AMCP commands, automatically parses the XML or JSON data to a JavaScript object, and provides a lazy-load injection for the [webcg-devtools](https://github.com/indr/webcg-devtools).
+webcg-framework is a framework to create and develop HTML templates for CasparCG and WebCG. The framework provides an API to listen for AMCP commands, executes your handlers asynchronously waiting for their completion using Promises, automatically parses the XML or JSON data to a JavaScript object, and provides a lazy-load injection for the [webcg-devtools](https://github.com/indr/webcg-devtools).
 
 Running examples can be found at http://indr.github.io/webcg-framework/ and https://indr.github.io/webcg-adobe-animate-adapter/.
 
@@ -26,7 +26,7 @@ Register an event handler to a specific event type and/or AMCP command.
 
 `type`: A case-sensitive string representing the event type, AMCP command and/or invoked function to listen for. For example `play`, `stop`, `update`, `data`, `myfunc1`.
   
-`listener`: The JavaScript function that receives a notification when an event of the specified type occurs.
+`listener`: The JavaScript function that receives a notification when an event of the specified type occurs. Return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) to delay processing until your handler is complete (for example, loading images, waiting for animations to complete).
 
 #### removeEventListener(type, listener)
 
@@ -46,7 +46,7 @@ Alias for `removeEventListener()`
 | ---- | ----------- |
 | `play` | Fired when the template should play the intro animations and become visible. |
 | `stop` | Fired when the template should play the outro animations and become invisible. |
-| `next` | Fired when the template should move the the next step in a multi step template. |
+| `next` | Fired when the template should move the the next step in a multi step template (for example paged lists). |
 | `update` | Fired when the template receives raw data. |
 | `data` | Fired after `update` with the raw data parsed as a JSON object. Handles component XML data, JSON strings and JavaScript objects. |
 

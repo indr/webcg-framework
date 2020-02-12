@@ -1,4 +1,4 @@
-import Parser from './Parser.js'
+import Parser from './Parser'
 
 const FUNCTIONS = ['play', 'stop', 'next', 'update']
 
@@ -13,7 +13,9 @@ class WebCG {
       this._window[each].webcg = true
     })
     this._state = State.stopped
+    this._transitioning = false
     this._bufferCommands = false
+    this._commandQueue = []
   }
 
   addEventListener (type, listener) {
@@ -40,8 +42,12 @@ class WebCG {
   }
 
   invokeFunction (name) {
-    if (this._bufferCommand.apply(this, ['_dispatch'].concat(Array.prototype.slice.call(arguments, 0)))) return
-    this._dispatch.apply(this, arguments)
+    if (this._bufferCommand.apply(this, ['invokeFunction'].concat(Array.from(arguments)))) return
+    this._transitioning = true
+    this._dispatch.apply(this, arguments).finally(() => {
+      this._transitioning = false
+      this._shiftCommand()
+    })
   }
 
   removeEventListener (type, listener) {
@@ -69,44 +75,74 @@ class WebCG {
 
   flushCommands () {
     this._bufferCommands = false
-    this._commandQueue.forEach(each => {
-      this[each.name].apply(this, each.args)
-    })
-    this._commandQueue = []
+    this._shiftCommand()
+  }
+
+  _shiftCommand () {
+    if (this._commandQueue.length) {
+      const command = this._commandQueue.shift()
+      this[command.name].apply(this, command.args)
+    }
   }
 
   play () {
     if (this._bufferCommand('play')) return
     if (this._state !== State.playing) {
-      this._dispatch('play')
-      this._state = State.playing
+      this._transitioning = true
+      this._dispatch('play').finally(() => {
+        this._transitioning = false
+        this._state = State.playing
+        this._shiftCommand()
+      })
     }
   }
 
   stop () {
     if (this._bufferCommand('stop')) return
     if (this._state === State.playing) {
-      this._dispatch('stop')
-      this._state = State.stopped
+      this._transitioning = true
+      this._dispatch('stop').finally(() => {
+        this._transitioning = false
+        this._state = State.stopped
+        this._shiftCommand()
+      })
     }
   }
 
   next () {
     if (this._bufferCommand('next')) return
-    this._dispatch('next')
+    this._transitioning = true
+    this._dispatch('next').finally(() => {
+      this._transitioning = false
+      this._shiftCommand()
+    })
   }
 
   update (data) {
     if (this._bufferCommand('update', data)) return
-    const handled = this._dispatch('update', data)
-    if (!handled) {
-      const parsed = new Parser().parse(data)
-      this._dispatch('data', parsed)
-    }
+    this._transitioning = true
+    this._dispatch('update', data).then(handled => {
+      this._transitioning = false
+      if (handled) {
+        this._shiftCommand()
+      } else {
+        const parsed = new Parser().parse(data)
+        this._transitioning = true
+        this._dispatch('data', parsed).finally(() => {
+          this._transitioning = false
+          this._shiftCommand()
+        })
+      }
+    }).catch(() => {
+      this._transitioning = false
+      this._shiftCommand()
+    })
   }
 
   _bufferCommand (name) {
-    if (!this._bufferCommands) return false
+    if (!this._transitioning && !this._bufferCommands) {
+      return false
+    }
     const args = Array.prototype.slice.call(arguments, 1)
     this._commandQueue.push({ name, args })
     return true
@@ -115,18 +151,35 @@ class WebCG {
   _dispatch (type) {
     const listeners = this._getListeners(type)
     const args = Array.prototype.slice.call(arguments, 1)
-    let handled = false
-    for (let i = listeners.length - 1; i >= 0 && handled === false; i--) {
-      const listener = listeners[i]
-      if (typeof listener !== 'function') continue
-      try {
-        handled = !!listener.apply(null, args)
-      } catch (error) {
-        console.warn(`[webcg-framework] ${type} event listener threw ${error.constructor.name}: ${error.message}`)
-        handled = false
-      }
-    }
-    return handled
+
+    const promises = listeners
+      .filter(listener => typeof listener === 'function')
+      .map(listener => {
+        return new Promise((resolve, reject) => {
+          try {
+            const result = listener.apply(null, args)
+            if (result && typeof result === 'object' && Object.getPrototypeOf(result).constructor === Promise) {
+              result.then(handled => {
+                resolve(!!handled)
+              }).catch(error => {
+                console.warn(`[webcg-framework] ${type} event listener threw ${error.constructor.name}: ${error.message}`)
+                resolve(false)
+              })
+            } else {
+              resolve(!!result)
+            }
+          } catch (error) {
+            console.warn(`[webcg-framework] ${type} event listener threw ${error.constructor.name}: ${error.message}`)
+            resolve(false)
+          }
+        })
+      })
+
+    return Promise.all(promises).then(values => {
+      return values.reduce((aggr, curr) => {
+        return aggr || curr
+      }, false)
+    })
   }
 
   _getListeners (type) {
