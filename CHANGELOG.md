@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.6.0](https://github.com/indr/webcg-framework/compare/v2.5.0...v2.6.0) (2020-02-12)
+
+
+### Features
+
+* add support for asynchronous command handling ([b47e2da](https://github.com/indr/webcg-framework/commit/b47e2da465b1d7438b4d292e6a395ab013c41245))
+
+
+### Bug Fixes
+
+* update webcg-devtools@2.0.0 ([d4699b1](https://github.com/indr/webcg-framework/commit/d4699b1631ef0b4a007cf155940b7151d6a1981a))
+
 ## [2.5.0](https://github.com/indr/webcg-framework/compare/v2.4.0...v2.5.0) (2020-01-22)
 
 
