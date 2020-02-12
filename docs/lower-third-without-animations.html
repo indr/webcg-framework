@@ -74,23 +74,23 @@
         }
     </style>
     <script type="text/javascript">
-      // Set initial data for webcg-devtools
-      window.debugData = { 'f0': 'Lower third with a subtitle', 'f1': 'and without animations' }
+    // Set initial data for webcg-devtools
+    window.debugData = { 'f0': 'Lower third with a subtitle', 'f1': 'and without animations' }
 
-      webcg.on('data', function (data) {
-        document.querySelector('.line-1').innerHTML = data.f0 ? data.f0.text || data.f0 : ''
-        document.querySelector('.line-2').innerHTML = data.f1 ? data.f1.text || data.f1 : ''
-      })
+    webcg.on('data', function (data) {
+      document.querySelector('.line-1').innerHTML = data.f0 ? data.f0.text || data.f0 : ''
+      document.querySelector('.line-2').innerHTML = data.f1 ? data.f1.text || data.f1 : ''
+    })
 
-      webcg.on('play', function () {
-        const overlay = document.querySelector('.overlay')
-        overlay.style.opacity = 1
-      })
+    webcg.on('play', function () {
+      const overlay = document.querySelector('.overlay')
+      overlay.style.opacity = 1
+    })
 
-      webcg.on('stop', function () {
-        const overlay = document.querySelector('.overlay')
-        overlay.style.opacity = 0
-      })
+    webcg.on('stop', function () {
+      const overlay = document.querySelector('.overlay')
+      overlay.style.opacity = 0
+    })
     </script>
 </head>
 <body>

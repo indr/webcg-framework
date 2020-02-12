@@ -76,31 +76,38 @@
         }
     </style>
     <script type="text/javascript">
-      // Set initial data for webcg-devtools
-      window.debugData = { 'f0': 'Lower third with a subtitle', 'f1': 'and animated with VelocityJS' }
+    // Set initial data for webcg-devtools
+    window.debugData = { 'f0': 'Lower third with a subtitle', 'f1': 'and animated with VelocityJS' }
 
-      // Set the default animation/transition duration to 1000 milliseconds
-      const defaultDurationMs = 1000
+    // Set the default animation/transition duration to 1000 milliseconds
+    const defaultDurationMs = 1000
 
-      webcg.on('data', function (data) {
-        document.querySelector('.line-1').innerHTML = data.f0 ? data.f0.text || data.f0 : ''
-        document.querySelector('.line-2').innerHTML = data.f1 ? data.f1.text || data.f1 : ''
-      })
+    webcg.on('data', function (data) {
+      document.querySelector('.line-1').innerHTML = data.f0 ? data.f0.text || data.f0 : ''
+      document.querySelector('.line-2').innerHTML = data.f1 ? data.f1.text || data.f1 : ''
+    })
 
-      webcg.on('play', function () {
-        const overlay = document.querySelector('.overlay')
-        Velocity(overlay, 'transition.swoopIn', { duration: defaultDurationMs })
-      })
+    webcg.on('play', function () {
+      const overlay = document.querySelector('.overlay')
+      // Velocity returns a promise that completes when the animation is complete. WebCG will wait for this promise.
+      return Velocity(overlay, 'transition.swoopIn', { duration: defaultDurationMs })
+    })
 
-      webcg.on('stop', function () {
-        const overlay = document.querySelector('.overlay')
-        Velocity(overlay, 'transition.flipYOut', { duration: defaultDurationMs })
-      })
+    webcg.on('stop', function () {
+      const overlay = document.querySelector('.overlay')
+      // Velocity returns a promise that completes when the animation is complete. WebCG will wait for this promise.
+      return Velocity(overlay, 'transition.flipYOut', { duration: defaultDurationMs })
+    })
 
-      webcg.on('next', function () {
-        const overlay = document.querySelector('.overlay')
-        Velocity(overlay, 'callout.pulse', { duration: defaultDurationMs })
-      })
+    webcg.on('next', function () {
+      const overlay = document.querySelector('.overlay')
+      // Velocity returns a promise that completes when the animation is complete. WebCG will wait for this promise.
+      return Velocity(overlay, 'callout.pulse', { duration: defaultDurationMs })
+    })
+
+    webcg.on('invoke1', function () {
+      console.log('invoke1', arguments)
+    })
     </script>
 </head>
 <body>
